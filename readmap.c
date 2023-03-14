@@ -12,44 +12,43 @@
 
 #include "so_long.h"
 #include <string.h>
+#include <stdio.h>
 
-int	ft_mapsize_control(t_win *win, char *line)
+void	ft_error(char	*msg, t_win *win)
 {
-	return (((int)ft_strlen(line) - 1 != win->map->wid
-			&& line[ft_strlen(line) - 1] == '\n')
-		|| (line[ft_strlen(line) - 1] != '\n'
-			&& (int)ft_strlen(line) != win->map->wid));
-}
 
-void	ft_error(char	*msg)
-{
 	ft_printf(RED "%s\n" RST, msg);
 	ft_printf("Error\n");
-	exit(0);
+	close_frame(win);
 }
 
 void	map_size(char *path, t_win *win)
 {
 	int		fd;
 	char	*line;
+	char	*trim_line;
 
 	win->map->hei = 0;
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
-		ft_error("Invalid ber");
+		ft_error("Invalid ber", win);
 	line = get_next_line(fd);
+	win->map->wid = (int)ft_strlen(line) - 1;
 	if (line == 0)
-		ft_error("Invalid map size");
-	win->map->wid = (int)ft_strlen(line)-1;
-	while (line)
+		ft_error("Invalid map size", win);
+	while (line && ++win->map->hei)
 	{
-		if (ft_mapsize_control(win, line))
-			ft_error("Invalid map size");
-		win->map->hei++;
+		trim_line = ft_strtrim(line, "\n");
+		if (trim_line && win->map->wid != (int)ft_strlen(trim_line))
+		{
+			free(trim_line);
+			free(line);
+			ft_error("wrong map", win);
+		}
+		free(trim_line);
 		free(line);
 		line = get_next_line(fd);
 	}
-	free(line);
 	close(fd);
 }
 
@@ -62,7 +61,7 @@ void	read_map(t_win *win, char *path)
 	i = 0;
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
-		ft_error("Invalid ber");
+		ft_error("Invalid ber", win);
 	line = get_next_line(fd);
 	win->map->_map = ft_calloc(win->map->hei, sizeof(char *));
 	while (line)

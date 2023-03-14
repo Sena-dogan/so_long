@@ -12,64 +12,62 @@
 
 #include "so_long.h"
 
-void	component_control(t_win	*win, char	**map)
+void component_control(t_win *win, char **map)
 {
-	int		i;
-	int		j;
+	int y = 0;
+	int x = 0;
 
-	i = -1;
-	while (++i < win->map->hei)
+	int hei = win->map->hei;
+	int wid = win->map->wid;
+	while (y < hei && map[y][x])
 	{
-		j = -1;
-		while (map[i][++j])
+		while (x < wid && map[y][x])
 		{
-			if (!ft_strchr("01ECP", map[i][j]))
-				ft_error("The map contains invalid letter(s).");
-			else if (map[i][j] == 'P')
+			if (!ft_strchr("01PCE", map[y][x]))
+				ft_error("Invalid Map Letter!", win);
+			else if (map[y][x] == 'P')
 				win->map->p_count++;
-			else if (map[i][j] == 'C')
+			else if (map[y][x] == 'C')
 				win->map->c_count++;
-			else if (map[i][j] == 'E')
+			else if (map[y][x] == 'E')
 				win->map->e_count++;
+			x++;
 		}
+		x = 0;
+		y++;
 	}
 	if (win->map->p_count != 1)
-		ft_error("Invalid number of player(s)");
-	if (win->map->e_count < 1)
-		ft_error("Invalid exit door.");
+		ft_error("There is no player or there are more than 1 player!", win);
 	if (win->map->c_count < 1)
-		ft_error("Invalid collectible.");
+		ft_error("There is no coin!", win);
+	if (win->map->e_count != 1)
+		ft_error("Ni ha ha.. There is no exit from here!! You can cry.", win);
 }
 
-void	wall_control(t_win *win, char **map)
+void wall_control(t_win *win, char **map)
 {
-	int	i;
-	int	j;
+	int y = 0;
+	int x = 0;
 
-	i = -1;
-	while (++i < win->map->hei)
+	int hei = win->map->hei;
+	int wid = win->map->wid;
+
+	while (y < hei && x < wid && map[y][x])
 	{
-		j = -1;
-		while (map[i][++j])
+		if (map[y][0] != '1' || map[y][wid - 1] != '1')
+			ft_error("Broken Waaaall!", win);
+		while ((y == 0 || y == hei - 1) && x < wid)
 		{
-			if (i == 0 || i == win->map->hei - 1)
-			{
-				if (map[i][j] != '1')
-				{
-					ft_error("Invalid walls. Check the borders of the map.");
-					break ;
-				}
-			}
+			if (map[y][x] != '1')
+				ft_error("Broken Wall!", win);
+			x++;
 		}
-		if (map[i][0] != '1' || map[i][win->map->wid - 1] != '1')
-		{
-			ft_error("Invalid walls. Check the borders of the map.");
-			break ;
-		}
+		x = 0;
+		y++;
 	}
 }
 
-void	map_control(t_win	*win, char	**map)
+void map_control(t_win *win, char **map)
 {
 	win->map->p_count = 0;
 	component_control(win, map);

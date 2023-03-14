@@ -12,31 +12,49 @@
 
 #include "so_long.h"
 
-int	close_frame(t_win *win)
+void free_map_and_struct(t_win *win)
 {
-	int		i;
+	int i;
 
 	i = -1;
-	mlx_destroy_image(win->mlx, win->chr->chr_up);
-	mlx_destroy_image(win->mlx, win->chr->chr_down);
-	mlx_destroy_image(win->mlx, win->chr->chr_r);
-	mlx_destroy_image(win->mlx, win->chr->chr_l);
-	mlx_destroy_image(win->mlx, win->bg);
-	mlx_destroy_image(win->mlx, win->coin);
-	mlx_destroy_image(win->mlx, win->exit);
-	mlx_destroy_image(win->mlx, win->wall);
+	win->map->_map[0][0] = 'A'; 
 	while (++i < win->map->hei)
+	{
+		ft_printf("freeing %dth row\n", i);
 		free(win->map->_map[i]);
-	mlx_destroy_window(win->mlx, win->win);
-	exit(1);
-	return (0);
+	}
+	free(win->map->_map);
+	free(win->map);
+	free(win->chr);
+	free(win);
+}
+
+int	close_frame(t_win *win)
+{
+	if (win->chr->chr_up != NULL && win->chr->chr_down != NULL &&
+		win->chr->chr_r != NULL && win->chr->chr_l != NULL && win->bg != NULL && 
+		win->coin != NULL && win->exit != NULL && win->wall != NULL && win->win != NULL)
+	{
+		mlx_destroy_image(win->mlx, win->chr->chr_up);
+		mlx_destroy_image(win->mlx, win->chr->chr_down);
+		mlx_destroy_image(win->mlx, win->chr->chr_r);
+		mlx_destroy_image(win->mlx, win->chr->chr_l);
+		mlx_destroy_image(win->mlx, win->bg);
+		mlx_destroy_image(win->mlx, win->coin);
+		mlx_destroy_image(win->mlx, win->exit);
+		mlx_destroy_image(win->mlx, win->wall);
+		mlx_destroy_window(win->mlx, win->win);
+	}
+	free_map_and_struct(win);
+	exit (1);
+	return (1);
 }
 
 int	ft_key(int keycode, t_win *win)
 {
-	if (keycode == 53)
+	if (keycode == CLOSE_WIN)
 		close_frame(win);
-	else if (keycode == 2 || keycode == 0 || keycode == 13 || keycode == 1)
+	else if (keycode == RIGHT || keycode == LEFT || keycode == UP || keycode == DOWN)
 		edit_map(keycode, win, win->map->_map);
 	return (0);
 }
@@ -53,15 +71,17 @@ int	main(int argc, char **argv)
 		win->mlx = mlx_init();
 		map_size(argv[1], win);
 		win->win = mlx_new_window(win->mlx,
-				64 * win->map->wid, 64 * win->map->hei, "Cowboy Bebop");
+				64 * win->map->wid, 64 * win->map->hei, "BumbleBee");
 		read_map(win, argv[1]);
 		map_control(win, win->map->_map);
+		if (!valid_path(win))
+			ft_error("Invalid path.\nError\n", win);
 		mlx_hook(win->win, 2, 1L << 0, ft_key, win);
 		mlx_hook(win->win, 17, 0, close_frame, win);
 		render_map(win, win->map->_map, 13);
 		mlx_loop(win->mlx);
 	}
 	else
-		ft_error("Invalid input.");
+		ft_printf("Invalid input.\nError\n");
 	return (0);
 }

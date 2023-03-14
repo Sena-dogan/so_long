@@ -23,16 +23,16 @@ void	put(t_win *win, int move, int i, int j)
 	else if (map[i][j] == '1')
 		mlx_put_image_to_window(win->mlx,
 			win->win, win->wall, j * 64, i * 64);
-	else if (map[i][j] == 'P' && move == 2)
+	else if (map[i][j] == 'P' && move == RIGHT)
 		mlx_put_image_to_window(win->mlx,
 			win->win, win->chr->chr_r, j * 64, i * 64);
-	else if (map[i][j] == 'P' && move == 13)
+	else if (map[i][j] == 'P' && move == UP)
 		mlx_put_image_to_window(win->mlx,
 			win->win, win->chr->chr_up, j * 64, i * 64);
-	else if (map[i][j] == 'P' && move == 0)
+	else if (map[i][j] == 'P' && move == LEFT)
 		mlx_put_image_to_window(win->mlx,
 			win->win, win->chr->chr_l, j * 64, i * 64);
-	else if (map[i][j] == 'P' && move == 1)
+	else if (map[i][j] == 'P' && move == DOWN)
 		mlx_put_image_to_window(win->mlx,
 			win->win, win->chr->chr_down, j * 64, i * 64);
 	else if (map[i][j] == 'E')

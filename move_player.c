@@ -29,7 +29,7 @@ void	new_map(t_win *win, char **map, int x, int y)
 	{
 		win->chr->move_count++;
 		ft_printf(MAG"%d\n"RST, win->chr->move_count);
-		ft_key(53, win);
+		ft_key(CLOSE_WIN, win);
 	}
 	map[win->chr->y][win->chr->x] = '0';
 	map[y][x] = 'P';
@@ -47,13 +47,13 @@ void	edit_map(int keycode, t_win *win, char **map)
 	find_player(win, map);
 	x = win->chr->x;
 	y = win->chr->y;
-	if (keycode == 2)
+	if (keycode == RIGHT)
 		x++;
-	else if (keycode == 13)
+	else if (keycode == UP)
 		y--;
-	else if (keycode == 1)
+	else if (keycode == DOWN)
 		y++;
-	else if (keycode == 0)
+	else if (keycode == LEFT)
 		x--;
 	if (map[y][x] != '1' && (map[y][x] != 'E' || win->map->c_count == 0))
 	{

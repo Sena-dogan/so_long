@@ -3,7 +3,7 @@ LFLAGS = -framework AppKit -framework OpenGL -L./mlx -lmlx
 MLX = ./mlx/libmlx.a
 GNL = $(wildcard gnl/*c)
 GNLOBJS = $(GNL:.c=.o)
-SRCS = main.c	readmap.c	mapcontrol.c	rendermap.c	move_player.c	
+SRCS = main.c	readmap.c	mapcontrol.c	rendermap.c	move_player.c valid_path.c	
 OBJS = $(SRCS:.c=.o)
 NAME = so_long
 
@@ -21,7 +21,10 @@ $(NAME) : $(OBJS) $(GNLOBJS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(OBJS) $(NAME)
+	make clean -C ./mlx
+	make clean -C ./ft_printf/libft
+	make clean -C ./ft_printf
+	rm -rf $(OBJS)
 
 fclean:
 	rm -rf $(OBJS) $(NAME)
