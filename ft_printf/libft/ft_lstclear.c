@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: egun <egun@student.42istanbul.com.tr>      +#+  +:+       +#+        */
+/*   By: zdogan <zdogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/10 15:19:32 by egun              #+#    #+#             */
-/*   Updated: 2022/01/14 11:02:25 by egun             ###   ########.fr       */
+/*   Created: 2022/07/07 03:52:21 by zdogan            #+#    #+#             */
+/*   Updated: 2022/07/26 16:07:50 by zdogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	ft_lstclear(t_list **lst, void (*del)(void*))
 {
-	t_list	*list;
+	t_list	*temp;
 
 	while (*lst)
 	{
-		list = (*lst)->next;
+		temp = (*lst)->next;
 		ft_lstdelone(*lst, del);
-		(*lst) = list;
+		*lst = temp;
 	}
 }

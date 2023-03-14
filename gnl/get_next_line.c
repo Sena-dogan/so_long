@@ -3,62 +3,61 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: egun <egun@student.42istanbul.com.tr>      +#+  +:+       +#+        */
+/*   By: sena <sena@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/15 18:24:32 by egun              #+#    #+#             */
-/*   Updated: 2022/01/29 20:17:55 by egun             ###   ########.fr       */
+/*   Created: 2022/09/15 17:04:15 by zdogan            #+#    #+#             */
+/*   Updated: 2023/03/14 20:44:40 by sena             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	check_error(int a, char *str, char *buffer)
+//read return value = rv
+int	ft_error_gnl(int rv, char *buff, char *str)
 {
-	if (a < 0)
+	if (rv == -1)
 	{
+		free (buff);
 		free (str);
-		free (buffer);
-		return (0);
+		return (1);
 	}
-	return (1);
+	return (0);
 }
 
-char	*getstr(int fd, char *str)
+char	*ft_read(int fd, char *str)
 {
-	int		a;
-	char	*buffer;
-	char	*s;
+	char	*buff;
+	int		rv;
+	char	*tmp;
 
 	if (!str)
 		str = ft_strdup("");
-	a = 1;
-	buffer = malloc(BUFFER_SIZE + 1);
-	if (!buffer)
+	buff = malloc(BUFFER_SIZE * sizeof(char) + 1);
+	if (!buff)
 		return (NULL);
-	while ((a != 0) && !(ft_strchr(str, '\n')))
+	rv = 1;
+	while (!ft_strchr(str, '\n') && rv != 0)
 	{
-		a = read(fd, buffer, BUFFER_SIZE);
-		if (a == 0)
+		rv = read(fd, buff, BUFFER_SIZE);
+		if (rv == 0)
 			break ;
-		if (!check_error(a, str, buffer))
+		if (ft_error_gnl(rv, buff, str))
 			return (NULL);
-		buffer[a] = '\0';
-		s = ft_strjoin(str, buffer);
+		buff[rv] = '\0';
+		tmp = ft_strjoin(str, buff);
 		free(str);
-		str = s;
+		str = tmp;
 	}
-	free(buffer);
+	free(buff);
 	return (str);
 }
 
-char	*getnewline(char *str)
+char	*ft_new_line(char *str)
 {
 	char	*ptr;
 	int		len;
 
-	if (!str)
-		return (NULL);
-	if (!*str)
+	if (!str || !*str)
 		return (NULL);
 	ptr = ft_strchr(str, '\n');
 	if (!ptr)
@@ -70,7 +69,7 @@ char	*getnewline(char *str)
 	return (ft_substr(str, 0, len));
 }
 
-char	*getremain(char *str)
+char	*ft_static_str(char *str)
 {
 	char	*ptr;
 
@@ -93,31 +92,16 @@ char	*getremain(char *str)
 
 char	*get_next_line(int fd)
 {
-	static char	*str;
-	char		*line;
+	static char		*str;
+	char			*line;
 
-	str = getstr(fd, str);
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (0);
+	str = ft_read(fd, str);
 	if (!str)
 		return (NULL);
-	line = getnewline(str);
-	str = getremain(str);
+		
+	line = ft_new_line(str);
+	str = ft_static_str(str);
 	return (line);
 }
-
-// #include <fcntl.h>
-// #include <stdio.h>
-
-// int   main()
-// {
-//   int   fd;
-//   char *c;
-//   fd = open("test.txt", O_RDWR);
-//   c = get_next_line(fd);
-//   while(c)
-//   {
-//     printf("%s",c);
-//     free(c);
-//       c = get_next_line(fd);
-//   }
-//   system("leaks a.out");
-// }

@@ -3,68 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: egun <egun@student.42istanbul.com.tr>      +#+  +:+       +#+        */
+/*   By: zdogan <zdogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/07 20:12:33 by egun              #+#    #+#             */
-/*   Updated: 2022/01/13 11:11:35 by egun             ###   ########.fr       */
+/*   Created: 2022/07/02 17:23:50 by zdogan            #+#    #+#             */
+/*   Updated: 2022/07/26 16:07:21 by zdogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	len(int n)
-{
-	int	i;
-
-	i = 0;
-	if (n <= 0)
-		i = 1;
-	while (n)
-	{
-		n /= 10;
-		i++;
-	}
-	return (i);
-}
-
-char	*inttostr(int n, int *f)
-{
-	int		leng;
-	char	*str;
-
-	leng = len(n);
-	str = (char *)malloc((sizeof(char) * leng) + 1);
-	if (!str)
-		return (NULL);
-	if (n < 0)
-	{
-		*f = -1;
-		str[0] = '-';
-	}
-	str[leng] = 0;
-	return (str);
-}
-
 char	*ft_itoa(int n)
 {
 	char	*str;
+	int		tmp;
 	int		i;
-	int		f;
 
-	f = 1;
-	i = len(n);
-	str = inttostr(n, &f);
+	i = 1;
+	tmp = n;
+	while (tmp && i++)
+		tmp /= 10;
+	str = (char *)malloc(sizeof(char) *((n < 0) + i + (n == 0)));
 	if (!str)
 		return (NULL);
+	str += (n < 0) + i - 1 + (n == 0);
+	*str = '\0';
 	if (n == 0)
-	{
-		*str = '0';
-		return (str);
-	}
+		*(--str) = '0';
+	i = (n >= 0) * 2 - 1;
 	while (n)
 	{
-		str[--i] = '0' + f * (n % 10);
+		*(--str) = (n % (10 * i)) * i + '0';
 		n /= 10;
 	}
+	if (i < 0)
+		*(--str) = '-';
 	return (str);
 }

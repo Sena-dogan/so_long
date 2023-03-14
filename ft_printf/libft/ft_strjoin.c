@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: egun <egun@student.42istanbul.com.tr>      +#+  +:+       +#+        */
+/*   By: zdogan <zdogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/06 12:22:08 by egun              #+#    #+#             */
-/*   Updated: 2022/01/10 18:01:06 by egun             ###   ########.fr       */
+/*   Created: 2022/06/30 23:09:26 by zdogan            #+#    #+#             */
+/*   Updated: 2022/07/26 16:11:00 by zdogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,24 @@
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char		*str;
-	size_t		i;
-	size_t		j;
+	size_t	i;
+	size_t	x;
+	size_t	dlen;
+	char	*dest;
 
-	i = 0;
-	j = 0;
 	if (!s1 || !s2)
 		return (NULL);
-	str = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
-	if (!str)
+	dlen = (ft_strlen(s1) + ft_strlen(s2));
+	dest = (char *) malloc(dlen + 1);
+	if (!dest)
 		return (NULL);
+	i = 0;
+	x = 0;
 	while (s1[i])
-		str[j++] = s1[i++];
-		i = 0;
+		dest[x++] = s1[i++];
+	i = 0;
 	while (s2[i])
-		str[j++] = s2[i++];
-	str[j] = '\0';
-	return (str);
+		dest[x++] = s2[i++];
+	dest[dlen] = '\0';
+	return (dest);
 }

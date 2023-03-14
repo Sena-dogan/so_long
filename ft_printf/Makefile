@@ -1,34 +1,36 @@
-NAME=libftprintf.a
-LIBFT=libft/libft.a
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: zdogan <zdogan@student.42.fr>              +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/08/18 10:02:55 by zdogan            #+#    #+#              #
+#    Updated: 2022/08/28 02:09:49 by zdogan           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-SRCS=ft_printf.c printf_utils.c
-OBJS=$(SRCS:.c=.o)
-
-BONUS_OBJS=$(BONUS:.c=.o)
-
-CC=gcc
-CFLAGS=-Wall -Wextra -Werror
-
-# $@ - target
-# $^ - butun dependen
-# $< - ilk dependen
+NAME = libftprintf.a
+CC = gcc
+SRCS = ft_printf.c ft_printf_utils.c
+OBJS = $(SRCS:.c=.o)
+CFLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@make bonus -C ./libft
-	@cp libft/libft.a $(NAME)
-	@ar rcs $@ $(OBJS)
-
-%.o: %.c
-	@$(CC) $(CFLAGS) -c $^
+	make -C libft
+	$(CC) $(CFLAGS) -c $(SRCS)
+	cp libft/libft.a $(NAME)
+	ar rcs $(NAME) $(OBJS)
 
 clean:
-	@rm -f $(OBJS) $(BONUS_OBJS)
+	rm -f $(OBJS)
 
 fclean: clean
-	@rm -f $(NAME)
+	make fclean -C libft
+	rm -f $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re

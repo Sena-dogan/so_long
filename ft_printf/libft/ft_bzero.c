@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: egun <egun@student.42istanbul.com.tr>      +#+  +:+       +#+        */
+/*   By: zdogan <zdogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/03 16:32:53 by egun              #+#    #+#             */
-/*   Updated: 2022/01/03 20:46:56 by egun             ###   ########.fr       */
+/*   Created: 2022/06/29 23:45:46 by zdogan            #+#    #+#             */
+/*   Updated: 2022/07/26 16:06:08 by zdogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,12 @@
 
 void	ft_bzero(void *s, size_t n)
 {
-	ft_memset(s, 0, n);
+	char	*zero;
+
+	zero = s;
+	while (n != 0)
+	{
+		*zero++ = 0;
+		n--;
+	}
 }

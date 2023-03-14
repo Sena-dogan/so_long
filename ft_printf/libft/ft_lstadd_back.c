@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back_bonus.c                             :+:      :+:    :+:   */
+/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: egun <egun@student.42istanbul.com.tr>      +#+  +:+       +#+        */
+/*   By: zdogan <zdogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/09 17:46:42 by egun              #+#    #+#             */
-/*   Updated: 2022/01/10 17:48:55 by egun             ###   ########.fr       */
+/*   Created: 2022/07/07 02:51:22 by zdogan            #+#    #+#             */
+/*   Updated: 2022/07/26 16:07:35 by zdogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,6 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 		*lst = new;
 		return ;
 	}
-	final = *lst;
-	while (final-> next)
-	{
-		final = final -> next;
-	}
-	final -> next = new;
+	final = ft_lstlast(*(lst));
+	final->next = new;
 }

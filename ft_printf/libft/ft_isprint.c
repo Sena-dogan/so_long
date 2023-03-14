@@ -3,18 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isprint.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: egun <egun@student.42istanbul.com.tr>      +#+  +:+       +#+        */
+/*   By: zdogan <zdogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/03 11:27:28 by egun              #+#    #+#             */
-/*   Updated: 2022/01/04 12:50:48 by egun             ###   ########.fr       */
+/*   Created: 2022/06/23 08:32:51 by zdogan            #+#    #+#             */
+/*   Updated: 2022/07/26 16:07:07 by zdogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+//printing characters, including space(dec32) -> (dec126)"~"   (*del-127*)
 #include "libft.h"
 
-int	ft_isprint(int str)
+int	ft_isprint(int c)
 {
-	if (str >= 32 && str <= 126)
+	if (c >= 32 && c <= 126)
 		return (1);
 	return (0);
 }

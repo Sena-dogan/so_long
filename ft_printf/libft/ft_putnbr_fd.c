@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: egun <egun@student.42istanbul.com.tr>      +#+  +:+       +#+        */
+/*   By: zdogan <zdogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/07 16:22:10 by egun              #+#    #+#             */
-/*   Updated: 2022/01/15 22:44:54 by egun             ###   ########.fr       */
+/*   Created: 2022/07/06 18:38:11 by zdogan            #+#    #+#             */
+/*   Updated: 2022/07/26 16:09:57 by zdogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,6 @@ void	ft_putnbr_fd(int n, int fd)
 		}
 		if (n > 9)
 			ft_putnbr_fd(n / 10, fd);
-		ft_putchar_fd(n % 10 + '0', fd);
+		ft_putchar_fd(n % 10 + 48, fd);
 	}
 }

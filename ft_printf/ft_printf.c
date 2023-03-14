@@ -3,61 +3,63 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: egun <egun@student.42istanbul.com.tr>      +#+  +:+       +#+        */
+/*   By: zdogan <zdogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/29 15:30:00 by egun              #+#    #+#             */
-/*   Updated: 2022/02/08 20:06:45 by egun             ###   ########.fr       */
+/*   Created: 2022/08/28 01:38:55 by zdogan            #+#    #+#             */
+/*   Updated: 2022/08/29 22:54:02 by zdogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	arg_printer(char c, va_list macro)
+int	ft_flagcontrol(char c, va_list ap)
 {
-	int	erochar;
+	int	x;
 
-	if (c == 'c')
+	x = 0;
+	if (c == 'x' || c == 'X' )
+		x += ft_hex(va_arg(ap, unsigned int), c);
+	else if (c == 'c')
+		x += ft_putchar(va_arg(ap, int));
+	else if (c == 'd' || c == 'i')
+		x += ft_putint(va_arg(ap, int), "0123456789");
+	else if (c == 's')
+		x += ft_putstr(va_arg(ap, char *));
+	else if (c == 'p')
 	{
-		erochar = va_arg(macro, int);
-		return (write(1, &erochar, 1));
+		x += ft_putstr("0x");
+		x += ft_hex(va_arg(ap, unsigned long long), c);
 	}
-	if (c == 's')
-		return (ft_putstr(va_arg(macro, char *)));
-	if (c == 'p')
-		return (ft_putpointer(va_arg(macro, unsigned long int)));
-	if (c == 'd' || c == 'i')
-		return (ft_putnbr(va_arg(macro, int)));
-	if (c == 'u')
-		return (ft_putunsigned(va_arg(macro, unsigned int)));
-	if (c == 'x')
-		return (ft_puthex(va_arg(macro, unsigned int), "0123456789abcdef"));
-	if (c == 'X')
-		return (ft_puthex(va_arg(macro, unsigned int), "0123456789ABCDEF"));
-	if (c == '%')
-		return (ft_putstr("%"));
-	return (0);
+	else if (c == 'u')
+		x += ft_putunsigned(va_arg(ap, unsigned int), "0123456789");
+	else if (c == '%')
+		x += ft_putchar('%');
+	return (x);
 }
 
-int	ft_printf(const char *key, ...)
+int	ft_printf(const char *str, ...)
 {
-	va_list	macro;
+	int		x;
 	int		i;
-	int		leng;
+	va_list	ap;
 
-	va_start(macro, key);
+	x = 0;
 	i = 0;
-	leng = 0;
-	while (key[i])
+	va_start(ap, str);
+	while (str[i])
 	{
-		if (key[i] == '%')
+		if (str[i] == '%')
 		{
-			leng += arg_printer(key[i + 1], macro);
+			i++;
+			x += ft_flagcontrol(str[i], ap);
 			i++;
 		}
 		else
-			leng += write(1, &key[i], 1);
-		i++;
+		{
+			x += ft_putchar(str[i]);
+			i++;
+		}
 	}
-	va_end(macro);
-	return (leng);
+	va_end(ap);
+	return (x);
 }
