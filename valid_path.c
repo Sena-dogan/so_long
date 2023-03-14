@@ -1,7 +1,7 @@
 #include "so_long.h"
 #include <string.h>
 
-char	**array_dup(char **array)
+char	**array_dup(char **array, int height)
 {
     ft_printf("start dup\n");
     char	**dup;
@@ -15,7 +15,7 @@ char	**array_dup(char **array)
         return (NULL);
     i = 0;
     ft_printf("start dup while\n");
-    while (array && array[i])
+    while (array && array[i] && i < height)
     {
         dup[i] = ft_strdup(array[i]);
         ft_printf("dup[%d]: %s\n", i, dup[i]);
@@ -41,13 +41,13 @@ void	array_clear(char **array)
 	array = NULL;
 }
 
-int can_p(char **lines, int x, int y, int dir) {
+int can_p(char **lines, int x, int y, int dir, int height) {
     char **map_dup;
 
     if (dir == 0)
 	{
-		map_dup = array_dup(lines);
-		dir = can_p(map_dup, x, y, 5);
+		map_dup = array_dup(lines, height);
+		dir = can_p(map_dup, x, y, 5, height);
 		return (dir);
 	}
 
@@ -58,13 +58,13 @@ int can_p(char **lines, int x, int y, int dir) {
     lines[x][y] = '1';
     int res = 0;
     if (dir != 2)
-        res |= can_p(lines, x, y + 1, 1);
+        res |= can_p(lines, x, y + 1, 1, height);
     if (dir != 1)
-        res |= can_p(lines, x, y - 1, 2);
+        res |= can_p(lines, x, y - 1, 2, height);
     if (dir != 4)
-        res |= can_p(lines, x + 1, y, 3);
+        res |= can_p(lines, x + 1, y, 3, height);
     if (dir != 3)
-        res |= can_p(lines, x - 1, y, 4);
+        res |= can_p(lines, x - 1, y, 4, height);
     return res;
 }
 
@@ -82,7 +82,7 @@ int	valid_path(t_win *win)
 		{
             ft_printf("i: %d, j: %d, char: %c\n", i, j, win->map->_map[i][j]);
 			if ((win->map->_map[i][j] == 'C' || win->map->_map[i][j] == 'E')
-				&& !can_p(win->map->_map, i, j, 0))
+				&& !can_p(win->map->_map, i, j, 0, win->map->hei))
 				return (0);
 			j++;
 		}
