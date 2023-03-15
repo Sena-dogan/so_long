@@ -3,26 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   mapcontrol.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sena <sena@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: zdogan <zdogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 20:33:46 by sena              #+#    #+#             */
-/*   Updated: 2023/03/14 20:34:13 by sena             ###   ########.fr       */
+/*   Updated: 2023/03/15 16:25:38 by zdogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "so_long.h"
 
-void component_control(t_win *win, char **map)
+void	component_control(t_win *win, char **map)
 {
-	int y = 0;
-	int x = 0;
+	int	y;
+	int	x;
 
-	int hei = win->map->hei;
-	int wid = win->map->wid;
-	while (y < hei && map[y][x])
+	y = -1;
+	while (++y < win->map->hei && map[y])
 	{
-		while (x < wid && map[y][x])
+		x = -1;
+		while (++x < win->map->wid && map[y][x])
 		{
 			if (!ft_strchr("01PCE", map[y][x]))
 				ft_error("Invalid Map Letter!", win);
@@ -32,10 +31,7 @@ void component_control(t_win *win, char **map)
 				win->map->c_count++;
 			else if (map[y][x] == 'E')
 				win->map->e_count++;
-			x++;
 		}
-		x = 0;
-		y++;
 	}
 	if (win->map->p_count != 1)
 		ft_error("There is no player or there are more than 1 player!", win);
@@ -45,14 +41,17 @@ void component_control(t_win *win, char **map)
 		ft_error("Ni ha ha.. There is no exit from here!! You can cry.", win);
 }
 
-void wall_control(t_win *win, char **map)
+void	wall_control(t_win *win, char **map)
 {
-	int y = 0;
-	int x = 0;
+	int	y;
+	int	x;
+	int	hei;
+	int	wid;
 
-	int hei = win->map->hei;
-	int wid = win->map->wid;
-
+	y = 0;
+	x = 0;
+	hei = win->map->hei;
+	wid = win->map->wid;
 	while (y < hei && x < wid && map[y][x])
 	{
 		if (map[y][0] != '1' || map[y][wid - 1] != '1')
@@ -68,7 +67,7 @@ void wall_control(t_win *win, char **map)
 	}
 }
 
-void map_control(t_win *win, char **map)
+void	map_control(t_win *win, char **map)
 {
 	win->map->p_count = 0;
 	component_control(win, map);

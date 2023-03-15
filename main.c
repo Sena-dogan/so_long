@@ -3,22 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sena <sena@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: zdogan <zdogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 20:34:25 by sena              #+#    #+#             */
-/*   Updated: 2023/03/14 20:34:28 by sena             ###   ########.fr       */
+/*   Updated: 2023/03/15 17:14:44 by zdogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "so_long.h"
 
-void free_map_and_struct(t_win *win)
+void	free_map_and_struct(t_win *win)
 {
-	int i;
+	int	i;
 
 	i = -1;
-	win->map->_map[0][0] = 'A'; 
+	win->map->_map[0][0] = 'A';
 	while (++i < win->map->hei)
 	{
 		ft_printf("freeing %dth row\n", i);
@@ -32,21 +31,24 @@ void free_map_and_struct(t_win *win)
 
 int	close_frame(t_win *win)
 {
-	if (win->chr->chr_up != NULL && win->chr->chr_down != NULL &&
-		win->chr->chr_r != NULL && win->chr->chr_l != NULL && win->bg != NULL && 
-		win->coin != NULL && win->exit != NULL && win->wall != NULL && win->win != NULL)
+	if (win->chr->chr_up && win->chr->chr_down
+		&& win->chr->chr_r && win->chr->chr_l && win->bg)
 	{
-		mlx_destroy_image(win->mlx, win->chr->chr_up);
-		mlx_destroy_image(win->mlx, win->chr->chr_down);
-		mlx_destroy_image(win->mlx, win->chr->chr_r);
-		mlx_destroy_image(win->mlx, win->chr->chr_l);
-		mlx_destroy_image(win->mlx, win->bg);
-		mlx_destroy_image(win->mlx, win->coin);
-		mlx_destroy_image(win->mlx, win->exit);
-		mlx_destroy_image(win->mlx, win->wall);
-		mlx_destroy_window(win->mlx, win->win);
+		if (win->coin && win->exit && win->wall && win->win)
+		{
+			mlx_destroy_image(win->mlx, win->chr->chr_up);
+			mlx_destroy_image(win->mlx, win->chr->chr_down);
+			mlx_destroy_image(win->mlx, win->chr->chr_r);
+			mlx_destroy_image(win->mlx, win->chr->chr_l);
+			mlx_destroy_image(win->mlx, win->bg);
+			mlx_destroy_image(win->mlx, win->coin);
+			mlx_destroy_image(win->mlx, win->exit);
+			mlx_destroy_image(win->mlx, win->wall);
+			mlx_destroy_window(win->mlx, win->win);
+		}
 	}
 	free_map_and_struct(win);
+	system("leaks so_long");
 	exit (1);
 	return (1);
 }
@@ -55,7 +57,8 @@ int	ft_key(int keycode, t_win *win)
 {
 	if (keycode == CLOSE_WIN)
 		close_frame(win);
-	else if (keycode == RIGHT || keycode == LEFT || keycode == UP || keycode == DOWN)
+	else if (keycode == RIGHT || keycode == LEFT
+		|| keycode == UP || keycode == DOWN)
 		edit_map(keycode, win, win->map->_map);
 	return (0);
 }
@@ -84,5 +87,6 @@ int	main(int argc, char **argv)
 	}
 	else
 		ft_printf("Invalid input.\nError\n");
+	system("leaks so_long");
 	return (0);
 }

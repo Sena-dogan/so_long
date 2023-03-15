@@ -3,41 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   valid_path.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sena <sena@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: zdogan <zdogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 20:36:21 by sena              #+#    #+#             */
-/*   Updated: 2023/03/14 20:36:23 by sena             ###   ########.fr       */
+/*   Updated: 2023/03/15 17:20:53 by zdogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "so_long.h"
 #include <string.h>
 
 char	**array_dup(char **array, int height)
 {
-    ft_printf("start dup\n");
-    char	**dup;
-    int		i;
+	char	**dup;
+	int		i;
 
-    i = 0;
-    while (array && array[i])
-        i++;
-    dup = (char **)malloc(sizeof(char *) * (i + 1));
-    if (!dup)
-        return (NULL);
-    i = 0;
-    ft_printf("start dup while\n");
-    while (array && array[i] && i < height)
-    {
-        dup[i] = ft_strdup(array[i]);
-        ft_printf("dup[%d]: %s\n", i, dup[i]);
-        i++;
-    }
-    ft_printf("end dup while\n");
-    dup[i] = NULL;
-    ft_printf("dup: %s\na", dup[0]);
-    return (dup);
+	i = 0;
+	while (array && array[i])
+		i++;
+	dup = (char **)malloc(sizeof(char *) * (i + 1));
+	if (!dup)
+		return (NULL);
+	i = 0;
+	while (array && array[i] && i < height)
+	{
+		dup[i] = ft_strdup(array[i]);
+		i++;
+	}
+	dup[i] = NULL;
+	return (dup);
 }
 
 void	array_clear(char **array)
@@ -54,52 +48,50 @@ void	array_clear(char **array)
 	array = NULL;
 }
 
-int can_p(char **lines, int x, int y, int dir, int height) {
-    char **map_dup;
+int	can_p(char **lines, int x, int y, int dir)
+{
+	int	res;
 
-    if (dir == 0)
-	{
-		map_dup = array_dup(lines, height);
-		dir = can_p(map_dup, x, y, 5, height);
-		return (dir);
-	}
-
-    if (x < 0 || y < 0 || !lines[x] || !lines[x][y] || lines[x][y] == '1')
-        return 0;
-    if (lines[x][y] == 'P')
-        return 1;
-    lines[x][y] = '1';
-    int res = 0;
-    if (dir != 2)
-        res |= can_p(lines, x, y + 1, 1, height);
-    if (dir != 1)
-        res |= can_p(lines, x, y - 1, 2, height);
-    if (dir != 4)
-        res |= can_p(lines, x + 1, y, 3, height);
-    if (dir != 3)
-        res |= can_p(lines, x - 1, y, 4, height);
-    return res;
+	if (x < 0 || y < 0 || !lines[x] || !lines[x][y] || lines[x][y] == '1')
+		return (0);
+	if (lines[x][y] == 'P')
+		return (1);
+	lines[x][y] = '1';
+	res = 0;
+	if (dir != 2)
+		res |= can_p(lines, x, y + 1, 1);
+	if (dir != 1)
+		res |= can_p(lines, x, y - 1, 2);
+	if (dir != 4)
+		res |= can_p(lines, x + 1, y, 3);
+	if (dir != 3)
+		res |= can_p(lines, x - 1, y, 4);
+	return (res);
 }
-
 
 int	valid_path(t_win *win)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
+	char	**map_dup;
 
 	i = 0;
-	while (i < win->map->hei && win->map->_map[i])
+	map_dup = array_dup(win->map->_map, win->map->hei);
+	while (i < win->map->hei && map_dup[i])
 	{
 		j = 0;
-		while (j < win->map->wid && win->map->_map[i][j])
+		while (j < win->map->wid && map_dup[i][j])
 		{
-            ft_printf("i: %d, j: %d, char: %c\n", i, j, win->map->_map[i][j]);
-			if ((win->map->_map[i][j] == 'C' || win->map->_map[i][j] == 'E')
-				&& !can_p(win->map->_map, i, j, 0, win->map->hei))
+			if ((map_dup[i][j] == 'C' || map_dup[i][j] == 'E')
+				&& !can_p(map_dup, i, j, 5))
+			{
+				array_clear(map_dup);
 				return (0);
+			}
 			j++;
 		}
 		i++;
 	}
+	array_clear(map_dup);
 	return (1);
 }

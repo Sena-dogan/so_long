@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sena <sena@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: zdogan <zdogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 17:04:15 by zdogan            #+#    #+#             */
-/*   Updated: 2023/03/14 20:44:40 by sena             ###   ########.fr       */
+/*   Updated: 2023/03/15 16:29:23 by zdogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ char	*get_next_line(int fd)
 	str = ft_read(fd, str);
 	if (!str)
 		return (NULL);
-		
 	line = ft_new_line(str);
 	str = ft_static_str(str);
 	return (line);

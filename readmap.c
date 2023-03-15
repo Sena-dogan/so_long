@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   readmap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sena <sena@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: zdogan <zdogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 20:35:08 by sena              #+#    #+#             */
-/*   Updated: 2023/03/14 20:35:10 by sena             ###   ########.fr       */
+/*   Updated: 2023/03/15 16:29:12 by zdogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "so_long.h"
 #include <string.h>
@@ -17,7 +16,6 @@
 
 void	ft_error(char	*msg, t_win *win)
 {
-
 	ft_printf(RED "%s\n" RST, msg);
 	ft_printf("Error\n");
 	close_frame(win);
@@ -29,14 +27,12 @@ void	map_size(char *path, t_win *win)
 	char	*line;
 	char	*trim_line;
 
-	win->map->hei = 0;
 	fd = open(path, O_RDONLY);
-	if (fd < 0)
-		ft_error("Invalid ber", win);
 	line = get_next_line(fd);
-	win->map->wid = (int)ft_strlen(line) - 1;
 	if (line == 0)
-		ft_error("Invalid map size", win);
+		ft_error("Invalid map size or Invalid map file", win);
+	win->map->wid = (int)ft_strlen(line) - 1;
+	win->map->hei = 0;
 	while (line && ++win->map->hei)
 	{
 		trim_line = ft_strtrim(line, "\n");

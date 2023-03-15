@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sena <sena@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: zdogan <zdogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 20:36:00 by sena              #+#    #+#             */
-/*   Updated: 2023/03/14 20:36:02 by sena             ###   ########.fr       */
+/*   Updated: 2023/03/15 16:51:04 by zdogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef SO_LONG_H
 # define SO_LONG_H
@@ -46,6 +45,7 @@ typedef struct s_chr
 	int		size;
 	int		x;
 	int		y;
+	int		dir;
 }	t_chr;
 
 typedef struct s_win
@@ -69,7 +69,7 @@ void	edit_map(int keycode, t_win *win, char **map);
 void	find_player(t_win *win, char **map);
 void	put_score(t_win *win);
 void	wall_control(t_win *win, char **map);
-void 	component_control(t_win *win, char **map);
+void	component_control(t_win *win, char **map);
 int		close_frame(t_win *win);
 void	ft_error(char	*msg, t_win *win);
 int		valid_path(t_win *win);
