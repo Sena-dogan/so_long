@@ -1,3 +1,4 @@
+CC = gcc
 CFLAGS = -Wall -Wextra -Werror -I./mlx -g
 LFLAGS = -framework AppKit -framework OpenGL -L./mlx -lmlx
 MLX = ./mlx/libmlx.a

@@ -6,7 +6,7 @@
 /*   By: zdogan <zdogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 20:35:49 by sena              #+#    #+#             */
-/*   Updated: 2023/03/15 16:29:41 by zdogan           ###   ########.fr       */
+/*   Updated: 2023/03/17 19:06:49 by zdogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,25 @@ void	put(t_win *win, int move, int i, int j)
 	map = win->map->_map;
 	if (map[i][j] == 'C')
 		mlx_put_image_to_window(win->mlx,
-			win->win, win->coin, j * 64, i * 64);
+			win->id, win->coin, j * 64, i * 64);
 	else if (map[i][j] == '1')
 		mlx_put_image_to_window(win->mlx,
-			win->win, win->wall, j * 64, i * 64);
+			win->id, win->wall, j * 64, i * 64);
 	else if (map[i][j] == 'P' && move == RIGHT)
 		mlx_put_image_to_window(win->mlx,
-			win->win, win->chr->chr_r, j * 64, i * 64);
+			win->id, win->chr->chr_r, j * 64, i * 64);
 	else if (map[i][j] == 'P' && move == UP)
 		mlx_put_image_to_window(win->mlx,
-			win->win, win->chr->chr_up, j * 64, i * 64);
+			win->id, win->chr->chr_up, j * 64, i * 64);
 	else if (map[i][j] == 'P' && move == LEFT)
 		mlx_put_image_to_window(win->mlx,
-			win->win, win->chr->chr_l, j * 64, i * 64);
+			win->id, win->chr->chr_l, j * 64, i * 64);
 	else if (map[i][j] == 'P' && move == DOWN)
 		mlx_put_image_to_window(win->mlx,
-			win->win, win->chr->chr_down, j * 64, i * 64);
+			win->id, win->chr->chr_down, j * 64, i * 64);
 	else if (map[i][j] == 'E')
 		mlx_put_image_to_window(win->mlx,
-			win->win, win->exit, j * 64, i * 64);
+			win->id, win->exit, j * 64, i * 64);
 }
 
 void	render_others(t_win *win, char **map, int move)
@@ -87,7 +87,7 @@ void	render_map(t_win *win, char	**map, int move)
 		j = -1;
 		while (map[i][++j])
 			mlx_put_image_to_window(win->mlx,
-				win->win, win->bg, j * 64, i * 64);
+				win->id, win->bg, j * 64, i * 64);
 	}
 	render_others(win, map, move);
 	put_score(win);

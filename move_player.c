@@ -6,7 +6,7 @@
 /*   By: zdogan <zdogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 20:34:52 by sena              #+#    #+#             */
-/*   Updated: 2023/03/15 16:26:06 by zdogan           ###   ########.fr       */
+/*   Updated: 2023/03/17 19:06:49 by zdogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	put_score(t_win *win)
 	char	*score;
 
 	score = ft_itoa(win->chr->move_count);
-	mlx_string_put(win->mlx, win->win, 62, 62, 0xFF0000, score);
+	mlx_string_put(win->mlx, win->id, 62, 62, 0xFF0000, score);
 	free(score);
 }
 

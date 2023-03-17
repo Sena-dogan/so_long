@@ -6,7 +6,7 @@
 /*   By: zdogan <zdogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 20:36:00 by sena              #+#    #+#             */
-/*   Updated: 2023/03/15 16:51:04 by zdogan           ###   ########.fr       */
+/*   Updated: 2023/03/17 19:06:49 by zdogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,15 @@ enum{
 	UP = 13,
 	CLOSE_WIN = 53
 };
+
+enum{
+	DIR_UP,
+	DIR_DOWN,
+	DIR_LEFT,
+	DIR_RIGHT,
+	NO_DIR,
+};
+
 typedef struct s_map
 {
 	int			wid;
@@ -53,7 +62,7 @@ typedef struct s_win
 	t_map	*map;
 	t_chr	*chr;
 	void	*mlx;
-	void	*win;
+	void	*id;
 	void	*bg;
 	void	*wall;
 	void	*exit;

@@ -6,7 +6,7 @@
 /*   By: zdogan <zdogan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 20:34:25 by sena              #+#    #+#             */
-/*   Updated: 2023/03/15 17:14:44 by zdogan           ###   ########.fr       */
+/*   Updated: 2023/03/17 19:19:49 by zdogan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,11 @@ void	free_map_and_struct(t_win *win)
 	int	i;
 
 	i = -1;
-	win->map->_map[0][0] = 'A';
 	while (++i < win->map->hei)
 	{
-		ft_printf("freeing %dth row\n", i);
 		free(win->map->_map[i]);
 	}
 	free(win->map->_map);
-	free(win->map);
-	free(win->chr);
-	free(win);
 }
 
 int	close_frame(t_win *win)
@@ -34,7 +29,7 @@ int	close_frame(t_win *win)
 	if (win->chr->chr_up && win->chr->chr_down
 		&& win->chr->chr_r && win->chr->chr_l && win->bg)
 	{
-		if (win->coin && win->exit && win->wall && win->win)
+		if (win->coin && win->exit && win->wall && win->id)
 		{
 			mlx_destroy_image(win->mlx, win->chr->chr_up);
 			mlx_destroy_image(win->mlx, win->chr->chr_down);
@@ -44,11 +39,10 @@ int	close_frame(t_win *win)
 			mlx_destroy_image(win->mlx, win->coin);
 			mlx_destroy_image(win->mlx, win->exit);
 			mlx_destroy_image(win->mlx, win->wall);
-			mlx_destroy_window(win->mlx, win->win);
+			mlx_destroy_window(win->mlx, win->id);
 		}
 	}
 	free_map_and_struct(win);
-	system("leaks so_long");
 	exit (1);
 	return (1);
 }
@@ -74,19 +68,18 @@ int	main(int argc, char **argv)
 		win->chr = ft_calloc(1, sizeof(t_chr));
 		win->mlx = mlx_init();
 		map_size(argv[1], win);
-		win->win = mlx_new_window(win->mlx,
+		win->id = mlx_new_window(win->mlx,
 				64 * win->map->wid, 64 * win->map->hei, "BumbleBee");
 		read_map(win, argv[1]);
 		map_control(win, win->map->_map);
 		if (!valid_path(win))
 			ft_error("Invalid path.\nError\n", win);
-		mlx_hook(win->win, 2, 1L << 0, ft_key, win);
-		mlx_hook(win->win, 17, 0, close_frame, win);
+		mlx_hook(win->id, 2, 1L << 0, ft_key, win);
+		mlx_hook(win->id, 17, 0, close_frame, win);
 		render_map(win, win->map->_map, 13);
 		mlx_loop(win->mlx);
 	}
 	else
 		ft_printf("Invalid input.\nError\n");
-	system("leaks so_long");
 	return (0);
 }
